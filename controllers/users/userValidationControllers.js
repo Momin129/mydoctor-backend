@@ -1,22 +1,28 @@
-const User = require("../../models/userSchema");
+const pool = require("../../config/db");
+const { emailExists, contactExists } = require("./queries");
 
 const detectDuplicate = async (req, res) => {
   const email = req.query.email;
-  const contactNumber = req.query.contactNumber;
+  const contact = req.query.contact;
+  let type, checkFunction, value;
 
   if (email) {
-    const emailExist = await User.findOne({ email: email });
-    if (emailExist) res.status(400).json({ message: "Email already exists" });
-    else res.status(200).json({ message: "" });
+    type = "Email";
+    checkFunction = emailExists;
+    value = email;
   } else {
-    const contactNumberExist = await User.findOne({
-      contactNumber: contactNumber,
-    });
-    console.log(contactNumberExist);
-    if (contactNumberExist)
-      res.status(400).json({ message: "Number already exists" });
-    else res.status(200).json({ message: "" });
+    type = "Number";
+    checkFunction = contactExists;
+    value = contact;
   }
+
+  pool.query(checkFunction, [value], (err, result) => {
+    if (!err) {
+      if (result.rowCount > 0)
+        res.status(400).json({ message: `${type} already exists` });
+      else res.status(200).json({ message: "" });
+    }
+  });
 };
 
 module.exports = { detectDuplicate };
