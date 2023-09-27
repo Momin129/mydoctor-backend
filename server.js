@@ -9,6 +9,7 @@ app.use(cors());
 
 app.use("/api", require("./routes/userRoutes"));
 app.use("/api", require("./routes/specialityRoutes"));
+app.use("/api", require("./routes/doctorRoutes"));
 
 app.listen(process.env.PORT, () => {
   console.log(`Listing on PORT ${process.env.PORT}`);
