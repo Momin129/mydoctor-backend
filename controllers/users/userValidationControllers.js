@@ -1,18 +1,27 @@
 const pool = require("../../config/db");
-const { emailExists, contactExists } = require("./queries");
+const {
+  emailExistsPatient,
+  emailExistsHospitalAdmin,
+  contactExistsPatient,
+  contactExistsHospitalAdmin,
+} = require("./queries");
 
 const detectDuplicate = async (req, res) => {
   const email = req.query.email;
   const contact = req.query.contact;
+  const role = req.query.role;
+
   let type, checkFunction, value;
 
   if (email) {
     type = "Email";
-    checkFunction = emailExists;
+    checkFunction =
+      role == "patient" ? emailExistsPatient : emailExistsHospitalAdmin;
     value = email;
   } else {
     type = "Number";
-    checkFunction = contactExists;
+    checkFunction =
+      role == "patient" ? contactExistsPatient : contactExistsHospitalAdmin;
     value = contact;
   }
 

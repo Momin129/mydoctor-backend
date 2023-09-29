@@ -1,5 +1,11 @@
-const { nanoid } = require("nanoid");
+const obj = {
+  languages: ["english", "hindi"],
+  bio: "self",
+};
 
-const id = nanoid();
+let query = "Update patients set ";
+for (let item in obj) {
+  query += item + "=" + `{${obj[item]}}` + ",";
+}
 
-console.log(id);
+console.log(query);

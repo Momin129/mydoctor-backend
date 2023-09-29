@@ -17,7 +17,7 @@ const updatePersonalDetails = async (req, res) => {
     ]);
 
     const doctorUpdate = await pool.query(updateDoctorDetails, [
-      lang,
+      `{${lang}}`,
       consultation_fee,
       bio,
       doctor_id,

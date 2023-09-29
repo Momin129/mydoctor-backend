@@ -4,4 +4,8 @@ const updateUserDetails =
 const updateDoctorDetails =
   "Update doctors set languages=$1, consultation_fee=$2, bio=$3 where doctor_id=$4";
 
+const updateDoctorQuery = () => {
+
+};
+
 module.exports = { updateUserDetails, updateDoctorDetails };
