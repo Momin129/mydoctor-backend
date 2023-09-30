@@ -44,7 +44,7 @@ const loginUser = async (req, res) => {
   } else if (inHospitalAdmin.rowCount > 0) {
     const details = {
       role: "hospital_admin",
-      token: generateToken({ id: inPatient.rows[0]["hospital_id"] }),
+      token: generateToken({ id: inHospitalAdmin.rows[0]["hospital_id"] }),
     };
     // checking if login credentials are in hospital_admins table
     if (!bcrypt.compare(inHospitalAdmin.rows[0]["password"], password)) {
