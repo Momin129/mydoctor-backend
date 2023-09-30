@@ -3,9 +3,8 @@ const obj = {
   bio: "self",
 };
 
-let query = "Update patients set ";
-for (let item in obj) {
-  query += item + "=" + `{${obj[item]}}` + ",";
-}
+const set = Object.keys(obj)
+  .map((v, i) => `${v}=$${i + 1}`)
+  .join(",");
 
-console.log(query);
+console.log(set);

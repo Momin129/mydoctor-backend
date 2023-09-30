@@ -41,7 +41,6 @@ const registerDoctor = async (req, res) => {
   const id = nanoid();
   const { user_id, hospital_id, licenceNumber } = req.body;
 
-  console.log(licenceNumber);
   try {
     const result = await pool.query(insertDoctor, [
       id,
