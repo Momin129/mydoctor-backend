@@ -12,7 +12,6 @@ const {
 const router = require("express").Router();
 
 router.post("/registerUser", registerUser);
-router.post("/registerDoctor", registerDoctor);
 router.get("/duplicate", detectDuplicate);
 router.post("/login", loginUser);
 router.get("/verifyToken", verifyToken);

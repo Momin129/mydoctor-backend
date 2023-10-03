@@ -1,26 +1,30 @@
-const insertPatient =
-  "INSERT INTO public.patients(patient_id, fullname, email, password, contact, gender) VALUES($1, $2, $3, $4, $5, $6)";
+const insertIntoUsers =
+  "Insert into users (user_id,fullname,email,contact,password,gender,role) Values($1,$2,$3,$4,$5,$6,$7)";
 
-const insertDoctor =
-  "INSERT INTO public.doctors(doctor_id,user_id,hospital_id, licence_number) VALUES($1,$2,$3,$4)";
+const insertIntoPatient =
+  "Insert into patients(patient_id,user_id,dob) Values($1,$2,$3)";
 
-const insertHospitalAdmin =
-  "INSERT INTO public.hospital_admins(hospital_id,hospital_name,email,password,contact) VALUES ($1,$2,$3,$4,$5)";
+const insertIntoDoctor =
+  "Insert into doctors(doctor_id,user_id,licence_number) Values($1,$2,$3)";
 
-const emailExistsPatient = "Select * From patients where email = $1";
-const contactExistsPatient = "Select * From patients where contact = $1";
+const insertIntoHospital =
+  "Insert Into hospitals(hospital_id,hospital_name) Values($1,$2)";
 
-const emailExistsHospitalAdmin =
-  "Select * From hospital_admins where email = $1";
-const contactExistsHospitalAdmin =
-  "Select * From hopital_admins where contact = $1";
+const insertIntoHospitalAdmin =
+  "Insert into hospital_admin(hospital_admin_id,hospital_id,user_id) Values($1,$2,$3)";
+
+const emailExists = "Select * from users where email=$1";
+const contactExists = "Select * from users where contact=$1";
+
+const ifEmailPresent = "Select user_id,password,role from users where email=$1";
 
 module.exports = {
-  insertPatient,
-  insertDoctor,
-  insertHospitalAdmin,
-  emailExistsPatient,
-  contactExistsPatient,
-  emailExistsHospitalAdmin,
-  contactExistsHospitalAdmin,
+  insertIntoUsers,
+  insertIntoPatient,
+  insertIntoDoctor,
+  insertIntoHospital,
+  insertIntoHospitalAdmin,
+  emailExists,
+  contactExists,
+  ifEmailPresent,
 };

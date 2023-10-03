@@ -1,59 +1,47 @@
 const pool = require("../../config/db");
-const {
-  insertPatient,
-  insertHospitalAdmin,
-  insertDoctor,
-} = require("./queries");
+const { insertIntoUsers } = require("./queries");
 const { nanoid } = require("nanoid");
 const bcrypt = require("bcrypt");
+const {
+  insertInPatient,
+  insertInDoctor,
+  insertHospitalAdmin,
+} = require("../../utility/roleBasedInsertion");
 
 const registerUser = async (req, res) => {
   const id = nanoid();
 
-  const { fullname, email, password, contact, gender, hospital_name, role } =
-    req.body;
+  const data = req.body;
 
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
+  const insert = await pool.query(insertIntoUsers, [
+    id,
+    data.fullname,
+    data.email,
+    data.contact,
+    hashedPassword,
+    data.gender,
+    data.role,
+  ]);
 
-  let values = [];
-  let insertFunction;
+  if (insert.rowCount > 0) {
+    let insertIntoRole;
+    if (data.role == "patient") {
+      insertIntoRole = insertInPatient(id, data);
+    } else if (data.role == "doctor") {
+      insertIntoRole = insertInDoctor(id, data);
+    } else {
+      insertIntoRole = insertHospitalAdmin(id, data);
+    }
 
-  if (role == "patient") {
-    values = [id, fullname, email, hashedPassword, contact, gender];
-    insertFunction = insertPatient;
-  } else {
-    values = [id, hospital_name, email, hashedPassword, contact];
-    insertFunction = insertHospitalAdmin;
-  }
-
-  try {
-    const result = await pool.query(insertFunction, values);
-    if (result.rowCount > 0)
-      res.status(200).json({ message: "Registered Successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: "Something went wrong." });
-  }
-};
-
-const registerDoctor = async (req, res) => {
-  const id = nanoid();
-  const { user_id, hospital_id, licenceNumber } = req.body;
-
-  try {
-    const result = await pool.query(insertDoctor, [
-      id,
-      user_id,
-      hospital_id,
-      licenceNumber,
-    ]);
-    if (result.rowCount > 0)
-      res.status(200).json({ message: "Registered Successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: "Something went wrong." });
+    if (insertIntoRole)
+      res.status(201).json({ messages: "Registered Successfully." });
+    else
+      res
+        .status(400)
+        .json({ message: "Something went wrong, please try again." });
   }
 };
 
-module.exports = { registerUser, registerDoctor };
+module.exports = { registerUser };
