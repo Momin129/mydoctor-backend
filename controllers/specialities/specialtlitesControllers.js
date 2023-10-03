@@ -1,15 +1,15 @@
 const pool = require("../../config/db");
-const generateUniqueId = require("generate-unique-id");
 const { addSpeciality, getAllSpecialities } = require("./queries");
+const { nanoid } = require("nanoid");
 
 const addSpecialities = async (req, res) => {
-  const { speciality_name, image_url } = req.body;
+  const { speciality_name, speciality_image } = req.body;
   try {
-    const speciality_id = generateUniqueId({ length: 16, useLetters: false });
+    const speciality_id = nanoid();
     const result = await pool.query(addSpeciality, [
       speciality_id,
       speciality_name,
-      image_url,
+      speciality_image,
     ]);
     if (result) {
       res.status(200).json({ message: "Speciality Added" });
