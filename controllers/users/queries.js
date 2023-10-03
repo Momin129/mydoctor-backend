@@ -17,6 +17,8 @@ const emailExists = "Select * from users where email=$1";
 const contactExists = "Select * from users where contact=$1";
 
 const ifEmailPresent = "Select user_id,password,role from users where email=$1";
+const ifContactPresent =
+  "Select user_id,password,role from users where contact=$1";
 
 module.exports = {
   insertIntoUsers,
@@ -27,4 +29,5 @@ module.exports = {
   emailExists,
   contactExists,
   ifEmailPresent,
+  ifContactPresent,
 };

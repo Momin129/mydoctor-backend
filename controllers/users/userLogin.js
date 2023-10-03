@@ -2,12 +2,26 @@ const pool = require("../../config/db");
 const bcrypt = require("bcrypt");
 const generateToken = require("../../utility/authToken");
 const jwt = require("jsonwebtoken");
-const { ifEmailPresent } = require("./queries");
+const { ifEmailPresent, ifContactPresent } = require("./queries");
+const { isContact } = require("../../utility/checkContact");
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { emailContact, password } = req.body;
 
-  const isUser = await pool.query(ifEmailPresent, [email]);
+  let type, query;
+
+  const isNumber = isContact(emailContact);
+
+  console.log(isNumber);
+  if (!isNumber) {
+    type = "Email";
+    query = ifEmailPresent;
+  } else {
+    type = "Contact";
+    query = ifContactPresent;
+  }
+
+  const isUser = await pool.query(query, [emailContact]);
   if (isUser.rowCount > 0) {
     const data = isUser.rows[0];
     console.log(data["password"], password);
@@ -19,7 +33,7 @@ const loginUser = async (req, res) => {
         id: data["user_id"],
         token: generateToken({ id: data["user_id"], role: data["role"] }),
       });
-  } else res.status(400).json({ message: "Invalid Email" });
+  } else res.status(400).json({ message: `Invalid ${type}` });
 };
 
 const verifyToken = async (req, res) => {
