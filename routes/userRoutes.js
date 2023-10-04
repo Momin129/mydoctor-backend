@@ -1,8 +1,4 @@
-const pool = require("../config/db");
-const {
-  registerUser,
-  registerDoctor,
-} = require("../controllers/users/userEntryControllers");
+const { registerUser } = require("../controllers/users/userEntryControllers");
 const { loginUser, verifyToken } = require("../controllers/users/userLogin");
 
 const {

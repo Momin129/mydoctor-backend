@@ -16,9 +16,10 @@ const insertIntoHospitalAdmin =
 const emailExists = "Select * from users where email=$1";
 const contactExists = "Select * from users where contact=$1";
 
-const ifEmailPresent = "Select user_id,password,role from users where email=$1";
+const ifEmailPresent =
+  "Select user_id,password,role from users where email=$1 and deleted=false";
 const ifContactPresent =
-  "Select user_id,password,role from users where contact=$1";
+  "Select user_id,password,role from users where contact=$1 and deleted=false";
 
 module.exports = {
   insertIntoUsers,
