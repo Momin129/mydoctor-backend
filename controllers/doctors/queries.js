@@ -27,4 +27,10 @@ const updatePersonalDetails = (personalDetails, user_id) => {
   return query;
 };
 
-module.exports = { updateGeneralDetails, updatePersonalDetails };
+const getGeneralDetails =
+  "Select fullname,contact,email,gender from users where user_id = $1";
+
+const getPersonalDetails =
+  "Select licence_number,specialities,experience,qualifications,bio from doctors where user_id = $1";
+
+module.exports = { getGeneralDetails, getPersonalDetails };
