@@ -1,11 +1,30 @@
-const updateUserDetails =
-  "Update users set fullname=$1, email=$2, contact=$3, gender=$4 where user_id=$5 ";
+const updateGeneralDetails = (generalDetails, user_id) => {
+  let query = "UPDATE users SET ";
 
-const updateDoctorDetails =
-  "Update doctors set languages=$1, consultation_fee=$2, bio=$3 where doctor_id=$4";
+  const set = Object.keys(generalDetails)
+    .map((v) => `${v}='${generalDetails[v]}'`)
+    .join(",");
 
-const updateDoctorQuery = () => {
+  query += set + ` WHERE user_id='${user_id}';`;
 
+  return query;
 };
 
-module.exports = { updateUserDetails, updateDoctorDetails };
+const updatePersonalDetails = (personalDetails, user_id) => {
+  let query = "UPDATE doctors SET ";
+
+  const set = Object.keys(personalDetails)
+    .map((v) => {
+      if (v == "experience" || v == "qualifications")
+        return `${v}='${JSON.stringify(personalDetails[v])}'`;
+      else if (v == "specialities") return `${v}='{${personalDetails[v]}}'`;
+      else return `${v}='${personalDetails[v]}'`;
+    })
+    .join(",");
+
+  query += set + ` WHERE user_id='${user_id}';`;
+
+  return query;
+};
+
+module.exports = { updateGeneralDetails, updatePersonalDetails };

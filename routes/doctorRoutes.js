@@ -1,10 +1,11 @@
 const express = require("express");
+
 const {
-  updatePersonalDetails,
-} = require("../controllers/doctors/updatePersonalDetailsController");
+  updateDetails,
+} = require("../controllers/doctors/updateDetailsController");
 
 const router = express.Router();
 
-router.post("/updateDoctor", updatePersonalDetails);
+router.post("/updateDoctor", updateDetails);
 
 module.exports = router;

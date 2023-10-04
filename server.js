@@ -9,7 +9,7 @@ app.use(cors());
 
 app.use("/api", require("./routes/userRoutes"));
 app.use("/api", require("./routes/specialityRoutes"));
-app.use("/api", require("./routes/doctorRoutes"));
+app.use("/api/doctors", require("./routes/doctorRoutes"));
 app.use("/api/hospital", require("./routes/hospitalRoutes"));
 app.use("/api/patients", require("./routes/patientRoutes"));
 
