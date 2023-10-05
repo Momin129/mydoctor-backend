@@ -1,0 +1,51 @@
+function defaultTime() {
+ const date = new Date();
+ let startHour=date.getHours(),startMinute=date.getMinutes(),endHour=date.getHours(),endMinute=date.getMinutes();
+ if(startMinute<=30){
+    startMinute=30;
+    endMinute="00"
+    endHour=startHour+1;
+ }
+ else{
+ 	startHour+=1;
+    startMinute="00";
+    endHour = startHour;
+    endMinute=30;
+ }
+ document.getElementById("startTime").value=startHour+":"+startMinute;
+ document.getElementById("endTime").value=endHour+":"+endMinute;
+}
+
+defaultTime();
+ 
+function changeTime(){
+	let arr = document.getElementById("startTime").value.split(':');
+    
+    
+    
+    let endHour=new Date(),endMinute=new Date();
+    if(Number(arr[1])+30>60){
+    	endHour=Number(arr[0])+1;
+        endMinute=Number(arr[1])+30-60;
+    }
+    else if(Number(arr[1])+30==60){
+    	endHour = Number(arr[0])+1;
+        endMinute="00";
+    }
+    else{
+    endHour = arr[0];
+    endMinute= Number(arr[1])+30;
+    }
+    
+    if(endMinute>=1 && endMinute<=9) endMinute="0"+endMinute;
+    
+    document.getElementById("endTime").value=endHour+":"+endMinute;
+    
+    const current = new Date();
+    if(Number(arr[0])<current.getHours() || Number(arr[1])<current.getMinutes()){
+	    document.getElementById("output").innerHTML="Please choose a time in future";
+    }
+    else
+      document.getElementById("output").innerHTML="";
+    
+}

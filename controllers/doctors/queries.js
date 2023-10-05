@@ -33,4 +33,17 @@ const getGeneralDetails =
 const getPersonalDetails =
   "Select licence_number,specialities,experience,qualifications,bio from doctors where user_id = $1";
 
-module.exports = { getGeneralDetails, getPersonalDetails };
+const create_slot =
+  "Insert into slots (slot_id,hospital_id,user_id,slot_size,start_time,end_time) Values($1,$2,$3,$4,%,$6)";
+
+const if_slot_exists =
+  "Select * from slots where user_id = $1  and start_time=$2";
+
+module.exports = {
+  updateGeneralDetails,
+  updatePersonalDetails,
+  getGeneralDetails,
+  getPersonalDetails,
+  create_slot,
+  if_slot_exists,
+};
