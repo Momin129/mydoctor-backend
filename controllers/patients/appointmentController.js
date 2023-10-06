@@ -35,7 +35,8 @@ const showAppointments = async (req, res) => {
   const user_id = req.query.user_id;
   try {
     const appointments = await pool.query(getAppointments, [user_id]);
-    if (appointments.rowCount > 0) res.status(200).json({ data: appointments });
+    if (appointments.rowCount > 0)
+      res.status(200).json({ data: appointments.rows });
     else res.status(200).json({ data: 0 });
   } catch (error) {
     console.log(error);
