@@ -1,5 +1,6 @@
 const pool = require("../../config/db");
 const { nanoid } = require("nanoid");
+
 const {
   addAppointment,
   updateBookedSlots,
