@@ -12,7 +12,6 @@ const loginUser = async (req, res) => {
 
   const isNumber = isContact(emailContact);
 
-  console.log(isNumber);
   if (!isNumber) {
     type = "Email";
     query = ifEmailPresent;
@@ -24,7 +23,6 @@ const loginUser = async (req, res) => {
   const isUser = await pool.query(query, [emailContact]);
   if (isUser.rowCount > 0) {
     const data = isUser.rows[0];
-    console.log(data["password"], password);
     if (!(await bcrypt.compare(password, data["password"]))) {
       res.status(400).json({ message: "Invalid password" });
     } else
@@ -41,7 +39,7 @@ const verifyToken = async (req, res) => {
     const token = req.query.token;
     const decode = jwt.verify(token, process.env.JWT_SECRET);
     if (decode) {
-      res.status(200).json({ success: true });
+      res.status(200).json({ success: true, decode });
     }
   } catch (error) {
     console.log(error);

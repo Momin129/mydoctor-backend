@@ -36,7 +36,7 @@ const registerUser = async (req, res) => {
     }
 
     if (insertIntoRole)
-      res.status(201).json({ messages: "Registered Successfully." });
+      res.status(201).json({ message: "Registered Successfully." });
     else
       res
         .status(400)

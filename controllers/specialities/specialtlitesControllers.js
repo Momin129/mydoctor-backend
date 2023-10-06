@@ -22,7 +22,7 @@ const addSpecialities = async (req, res) => {
 const retriveAllSpecialities = async (req, res) => {
   try {
     const result = await pool.query(getAllSpecialities);
-    res.status(200).json(result.rows);
+    res.status(200).json({ total: result.rowCount, data: result.rows });
   } catch (error) {
     res.status(400).json({ message: `Error: ${error}` });
   }
